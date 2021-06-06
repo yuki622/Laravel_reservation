@@ -20,8 +20,8 @@ class CreateRoomsTable extends Migration
             $table->foreign('studio_id')->references('id')->on('studios');
             $table->string('type');
             $table->text('description');
-            $table->decimal('price', 10, 0);
-            $table->string('image');
+            $table->integer('price');
+            $table->string('image')->nullable();
         });
     }
 

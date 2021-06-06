@@ -11,10 +11,10 @@
     <body>
         <header>
             <h1 class='headline'>
-                <a>YNStudio</a>
+                <a>YNmusic</a>
             </h1>
             <ul class="nav-list">
-                    <li class="nav-list-item">Vacancy search</li>
+                    <li class="nav-list-item"><a href ="/calendar">Vacancy search</a></li>
             </ul>
         </header>
         <div class="list">

@@ -11,17 +11,13 @@
     <body>
         <header>
             <h1 class='headline'>
-                <a>YNStudio</a>
+                <a>YNmusic</a>
             </h1>
-            <ul class="nav-list">
-                    <li class="nav-list-item">Vacancy search</li>
-                    <li class="nav-list-item">Login</li>
-            </ul>
         </header>
         <div class="studio">
-            <h2 class="name">
-                {{ $studio->name }}
-            </h2>
+            <div class="name">
+                <h2>Studio : {{ $studio->name }}</h2>
+            </div>
             <div class="contents">
                 <div class="content_studio">
                     <p>{{ $studio->location }}</p>
