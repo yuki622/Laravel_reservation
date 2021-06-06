@@ -69,6 +69,9 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+            'model' => App\Models\Studio::class,
+            'model' => App\Models\Room::class,
+            'model' => App\Models\Reservation::class,
         ],
 
         // 'users' => [
