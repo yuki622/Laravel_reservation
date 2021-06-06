@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
 class CreateStudiosTable extends Migration
 {
     /**
@@ -18,8 +19,8 @@ class CreateStudiosTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('location');
-            $table->text('description');
-            $table->string('image');
+            $table->string('description');
+            $table->string('image')->nullable();
             $table->string('tel_num');
         });
     }

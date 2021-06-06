@@ -16,7 +16,7 @@ class Studio extends Model
         ];
         
     public function rooms() {
-        return $this->hasmany('App/Models/Hotel'); 
+        return $this->hasmany('App/Models/Room'); 
     }
     
     public function store(Request $request , Studio $Studio){
