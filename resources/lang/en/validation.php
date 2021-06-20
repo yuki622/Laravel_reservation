@@ -146,6 +146,12 @@ return [
     |
     */
 
-    'attributes' => [],
-
+    'attributes' => [
+        'name'=>'名前',
+        'tel' =>'電話番号',
+        'num' => '人数',
+        'datetime' => '日時'
+        ],
+    
+    
 ];

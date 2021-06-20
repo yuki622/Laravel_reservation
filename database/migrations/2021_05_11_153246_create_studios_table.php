@@ -19,7 +19,7 @@ class CreateStudiosTable extends Migration
             $table->string('name');
             $table->string('location');
             $table->text('description');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('tel_num');
         });
     }

@@ -18,5 +18,6 @@ class Room extends Model
      public function studio() {
         return $this->belongsTo('App/Model/Studio');
      }
+     
     
 }
