@@ -6,16 +6,14 @@
         
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-        
     </head>
     <body>
         <header>
             <h1 class='headline'>
                 <a>YNmusic</a>
             </h1>
-            <ul class="nav-list">
-                    <li class="nav-list-item"><a href ="/calendar">Vacancy search</a></li>
-            </ul>
+                   <p>[calendar]</p>
+            
         </header>
         <div class="list">
             <h2>Studio list</h2>
