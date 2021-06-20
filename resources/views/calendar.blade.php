@@ -1,118 +1,157 @@
 <?php
-// タイムゾーンを設定
-date_default_timezone_set('Asia/Tokyo');
+    session_start();
+      $user_login = isset($_SESSION['user_login'])? $_SESSION['user_login']:false;
+    //require 'vendor/authload.php';
+    use Carbon\Carbon;
 
-// 前月・次月リンクが押された場合は、GETパラメーターから年月を取得
-if (isset($_GET['ym'])) {
-    $ym = $_GET['ym'];
-} else {
-    // 今月の年月を表示
-    $ym = date('Y-m');
-}
+     $m = isset($_GET['m'])? htmlspecialchars($_GET['m'], ENT_QUOTES, 'utf-8') : '';
+     $y = isset($_GET['y'])? htmlspecialchars($_GET['y'], ENT_QUOTES, 'utf-8') : '';
+        if($m!=''||$y!=''){
+            $dt = Carbon::createFromDate($y,$m,01);
+        }else{
+            $dt = Carbon::createFromDate();
+   }
+      //renderCalendar($dt);
+      
+      function renderCalendar($dt)
+      {
+        //DB接続
+       try{
+          $dbh = new PDO("mysql:host=localhost;dbname=reservation","dbuser","dros0622");
+       }catch(PDOException $e){
+          var_dump($e->getMessage());
+          exit;
+       }
+        $dt->startOfMonth(); //今月の最初の日
+          $dt->timezone = 'Asia/Tokyo'; //日本時刻で表示
+          
+          //１ヶ月前
+       $sub = Carbon::createFromDate($dt->year,$dt->month,$dt->day);
+       $subMonth = $sub->subMonth();
+       $subY = $subMonth->year;
+       $subM = $subMonth->month;
+       
+            //1ヶ月後
+       $add = Carbon::createFromDate($dt->year,$dt->month,$dt->day);
+       $addMonth = $add->addMonth();
+       $addY = $addMonth->year;
+       $addM = $addMonth->month;
+       
+       //今月
+       $today = Carbon::createFromDate();
+       $todayY = $today->year;
+       $todayM = $today->month;
 
-// タイムスタンプを作成し、フォーマットをチェックする
-$timestamp = strtotime($ym . '-01');
-if ($timestamp === false) {
-    $ym = date('Y-m');
-    $timestamp = strtotime($ym . '-01');
-}
-
-// 今日の日付 フォーマット　例）2018-07-3
-$today = date('Y-m-j');
-
-// カレンダーのタイトルを作成　例）2017年7月
-$html_title = date('Y年n月', $timestamp);
-
-// 前月・次月の年月を取得
-// 方法１：mktimeを使う mktime(hour,minute,second,month,day,year)
-$prev = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
-$next = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)+1, 1, date('Y', $timestamp)));
-
-// 方法２：strtotimeを使う
-// $prev = date('Y-m', strtotime('-1 month', $timestamp));
-// $next = date('Y-m', strtotime('+1 month', $timestamp));
-
-// 該当月の日数を取得
-$day_count = date('t', $timestamp);
-
-// １日が何曜日か　0:日 1:月 2:火 ... 6:土
-// 方法１：mktimeを使う
-$youbi = date('w', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp)));
-// 方法２
-// $youbi = date('w', $timestamp);
+       //リンク
+       $title = '<h4>'.$dt->format('F Y').'</h4>';//月と年を表示
+       $title .= '<div class="month"><caption><a class="left" href="./calendar?y='.$todayY.'&&m='.$todayM.'">今月　</a>';
+       $title .= '<a class="left" href="./calendar?y='.$subY.'&&m='.$subM.'"><<前月 </a>';//前月のリンク
+       $title .= '<a class="right" href="./calendar?y='.$addY.'&&m='.$addM.'"> 来月>></a></caption></div>';//来月リンク
+          
+          //曜日の配列作成
+          $headings = ['月','火','水','木','金','土','日'];
+   
+      //$calendar = '<table class="table" border=1>';
+      $calendar = '<table class="calendar-table">';
+      $calendar .= '<thead >';
+      foreach($headings as $heading){
+          $calendar .= '<th class="header">'.$heading.'</th>';
+      }
+      $calendar .= '</thead>';
+      
+      $calendar .= '<tbody><tr>';
 
 
-// カレンダー作成の準備
-$weeks = [];
-$week = '';
+   //今月は何日まであるか
+    $daysInMonth = $dt->daysInMonth;
+   
+    for ($i = 1; $i <= $daysInMonth; $i++) {
+        
+        $datetime = $dt->year."-".$dt->month."-".$dt->day; //日付を取得
+        $stmt = $dbh->prepare("SELECT * FROM REGISTRY where id = ?");
+        $stmt->execute([$_GET['id']]);
+        //$stmt = $dbh->prepare("SELECT * FROM sessions where name = :name");
+        //$stmt->bindParam("name",name);
+        //$stmt->execute();
+        $count = $stmt->rowCount(); //予約件数を取得
+        
+        if($i==1){
+                if ($dt->format('N')!= 1) {
+                    $calendar .= '<td colspan="'.($dt->format('N')-1).'"></td>'; //1日が月曜じゃない場合はcospanでその分あける
+                }
+            }
+            
+        if($dt->format('N') == 1){
+           $calendar .= '</tr><tr>'; //月曜日だったら改行
+       }
+       
+        $comp = new Carbon($dt->year."-".$dt->month."-".$dt->day); //ループで表示している日
+        $comp_now = Carbon::today(); //今日
 
-// 第１週目：空のセルを追加
-// 例）１日が水曜日だった場合、日曜日から火曜日の３つ分の空セルを追加する
-$week .= str_repeat('<td></td>', $youbi);
-
-for ( $day = 1; $day <= $day_count; $day++, $youbi++) {
-
-    // 2017-07-3
-    $date = $ym . '-' . $day;
-
-    if ($today == $date) {
-        // 今日の日付の場合は、class="today"をつける
-        $week .= '<td class="today">' . $day;
-    } else {
-        $week .= '<td>' . $day;
-    }
-    $week .= '</td>';
-
-    // 週終わり、または、月終わりの場合
-    if ($youbi % 7 == 6 || $day == $day_count) {
-
-        if ($day == $day_count) {
-            // 月の最終日の場合、空セルを追加
-            // 例）最終日が木曜日の場合、金・土曜日の空セルを追加
-            $week .= str_repeat('<td></td>', 6 - ($youbi % 7));
+        //ループの日と今日を比較
+        if ($comp->eq($comp_now)) {
+            //同じなので緑色の背景にする
+            $calendar .= '<td class="day" style="background-color:#ff0000;">'.$dt->day;
+        }else{
+            switch ($dt->format('N')) {
+                case 6:
+                    $calendar .= '<td class="day" style="background-color:#afeeee">'.$dt->day;
+                    break;
+                case 7:
+                    $calendar .= '<td class="day" style="background-color:#ffa07a">'.$dt->day;
+                    break;
+                default:
+                    $calendar .= '<td class="day" >'.$dt->day.'</td>';
+                    break;
+     }
+ } 
+        if($count != 0){
+            $sessions= $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach($sessions as $id)
+            {
+                $calendar .= '<br>予約あり</a>';
+            }
+            $calendar .= '</td>';
+        }else{
+        $calendar .= '</td>';
         }
+        $dt->addDay();
+   }
 
-        // weeks配列にtrと$weekを追加する
-        $weeks[] = '<tr>' . $week . '</tr>';
+    $calendar .= '</tr></tbody>';
 
-        // weekをリセット
-        $week = '';
-	}
-}
+        $calendar .= '</table>';
+   
+        //echo $title.$calendar;
+        return $title.$calendar;
+      }
+    
+    
 ?>
- <!DOCTYPE html>
-<html lang="ja">
+
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <title>予約状況</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     
 </head>
 <body>
     <head>
-        <h1>YNStudio</h1>
+        <h1>YNMusic</h1>
     </head>
     <div class="container">
-        <h3><a href="?ym=<?php echo $prev; ?>">&lt;</a> <?php echo $html_title; ?> <a href="?ym=<?php echo $next; ?>">&gt;</a></h3>
-        <table class="table table-bordered">
-            <tr>
-                <th>日</th>
-                <th>月</th>
-                <th>火</th>
-                <th>水</th>
-                <th>木</th>
-                <th>金</th>
-                <th>土</th>
-            </tr>
-            <?php
-            foreach ($weeks as $week) {
-                    echo $week;
-            }
-            ?>
-        </table>
+        <div class="wrapper-title">
+            <h2>ご予約状況</h2>
+        </div>
+        <?php echo renderCalendar($dt); ?>
+            
     </div>
+    <div class="back">
+            <a href="/studio">back</a>
+        </div>
 </body>
 </html>

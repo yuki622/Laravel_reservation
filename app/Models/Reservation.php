@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Reservation extends Model
+class Reservation extends Model 
 {
     protected $fillable = [
         'user_id',
-        'studio_id',
-        'num_of_guests',
-        'start',
-        'finish'
+        'room_id',
+        'num',
+        'datetime',
+        //'finish'
         ];
         
     public function room () {
         return $this->belongsTo('App/Models/Room');
     }
+    
 }

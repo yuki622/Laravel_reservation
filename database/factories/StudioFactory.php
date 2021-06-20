@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 $factory->define(Studio::class, function (Faker $faker) {
     return [
         //データをセット
-        'name' => $faker->company,
+        'name' => $faker->word,
         'location' => $faker->address,
         'description' => $faker->text(100),
         'tel_num' => $faker->phoneNumber

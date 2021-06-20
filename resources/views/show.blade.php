@@ -27,7 +27,7 @@
                 <div class="content_room">
                         <h3>Room type</h3>
                     @foreach ($rooms as $room)
-                        <p>[{{ $room->type }}]   <font color="red">reservation</font></p>
+                        <p>[{{ $room->type }}]   <font color="red"><a href="/reservation/{{ $room->id }}">reservation</a></font></p>
                         <p>{{ $room->description }}</p>
                         <p>{{ $room->price }}</p>
                     @endforeach
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="back">
-            <a href="/">back</a>
+            <a href="/studio">back</a>
         </div>
         <footer>
             <p>© YNStudio.All Rights Reserved.</p>
