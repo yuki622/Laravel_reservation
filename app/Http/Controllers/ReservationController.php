@@ -94,111 +94,13 @@ class ReservationController extends Controller
 	}
     
     
-         //function confirm(Request $request)
-    //{   
-        //$validated = $request->validated();
-        
-        
-        //$request->validate([
-            //'name'=> 'required|min:2|max:20|regex:/^[^A-Za-z0-9]+$/u',
-            //'tel' => 'required||regex:/^0\d{9,10}$/u',
-            //'num' => 'required|min:1|max:15|numeric',
-            //'datetime' => 'required'
-        //]);
-        
-        
-    
-         //$validated = $request->validated();
-        
-        //$validator = Validator::make($request->all(),[
-            //'name'=> 'required|min:2|max:20',
-            //'tel' => 'required|digits_between:8,15',
-            //'num' => 'required|min:1|max:15|numeric',
-            //'datetime' => 'required'
-        //]);
-        //$name = $request->validated();
-        //$tel = $request->validated();
-        //$num = $request->validated();
-        //$datetime = $request->validated();
-        //$request->session()->put(self::FORM_DATA_KEY, $validated);
-        //if ($validator->fails()) {
-            //return redirect('reservation/confirm')
-                        //->withErrors($validator)
-                        //->withInput();
-        //return view('reservation.confirm', $validated);                
-       
-         //$name = $request->name;
-         //$tel = $request->tel;
-         //$num = $request->num;
-         //$datetime = $request->datetime;
-         
-         
-         
-        //return view('confirm', [
-        //'name' => $name,
-        //'tel' => $tel,
-        //'num' => $num,
-        //'datetime' => $datetime
-        //]);
-
-        
-    
-    
-        //public function confirm(ReservationRequest $request)
-    //{
-     //送信されたリクエストは正しい
-
-     //バリデーション済みデータの取得
-        //$validated = $request->validated();
-        //return view('confirm');
-    //}
-    
-        //public function confirm(ReservationRequest $request)
-    //{
-    // 送信されたリクエストは正しい
-
-    // バリデーション済みデータの取得
-        //$validated = $request->validated();
-    //}
     
        
          function finish()
     {
-        //if (!$request->session()->has(self::FORM_DATA_KEY)) {
-            //$input = $request['reservation'];
-            //$reservation->fill($input)->save();
-            //return redirect()->route('reservation');
-        //}
-
-        
-        //$form_data = $request->session()->pull(self::FORM_DATA_KEY);
         
         return view('finish');
 
     }
 }
     
-        function store(Reservation $reservation, Request $request)
-    {
-        
-             
-            //$reservation = new Reservation;
-            
-            $reservation->user_id = auth()->id();
-            $reservation->reservations = $num;
-            $reservation->reservations = $datetime;
-            $reservation->save();
-            
-            //$input = $request['name'];
-            //$input = $request['tel'];
-            $input = $request['num'];
-            $input = $request['datatime'];
-            //$name->fill($input)->save();
-            //$tel->fill($input)->save();
-            $num->fill($input)->save();
-            $datetime->fill($input)->save();
-            
-            
-            return redirect('/reservations/' . $reservation);
-    }
-

@@ -25,7 +25,5 @@ Route::get('/calendar', 'CalendarController@calendar');
 Route::post('/reservation/', "ReservationController@post")->name("reservation.post");
 Route::get('/reservation/confirm', 'ReservationController@confirm')->name("reservation.confirm");
 Route::post('/reservation/confirm', "ReservationController@send")->name("reservation.send");
-//Route::middleware('auth')->get('api/reservation', 'ReservationController@send');
 Route::get('/reservation/finish', 'ReservationController@finish')->name("reservation.finish");
-Route::post('/reservations', 'ReservationController@store');
 Route::get('/reservation/{room}', 'ReservationController@show');
