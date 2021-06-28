@@ -26,4 +26,4 @@ Route::post('/reservation/', "ReservationController@post")->name("reservation.po
 Route::get('/reservation/confirm', 'ReservationController@confirm')->name("reservation.confirm");
 Route::post('/reservation/confirm', "ReservationController@send")->name("reservation.send");
 Route::get('/reservation/finish', 'ReservationController@finish')->name("reservation.finish");
-Route::get('/reservation/{room}', 'ReservationController@show');
+Route::get('/reservation/{room}', 'ReservationController@show')->name("reservation.show");

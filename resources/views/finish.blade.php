@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="/css/style.css">
         <title>Reservation</title>
         
         <!-- Fonts -->
@@ -10,16 +11,14 @@
     </head>
     <body>
         <header>
-            <h1 class='headline'>
-                <a>YNmusic</a>
-            </h1>
+            <div class='headline'>
+                <h1>YNmusic</h1>
+            </div>
         </header>
-        <h3>予約が完了しました。</h3>
-        <div class="submit">
+        <div class="complete">
+                <h3>予約が完了しました。</h3>
                 <a href="/studio"><input type="submit" name="btn_top" value="top"/></a>
         </div>
-        <footer>
-            <p>© YNStudio.All Rights Reserved.</p>
-        </footer>　
+      
     </body>
 </html>

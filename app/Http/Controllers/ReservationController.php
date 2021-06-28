@@ -35,9 +35,11 @@ class ReservationController extends Controller
 		$input = $request->only($this->formItems);
 		$input = $input + array('room_id' => $request->input('room_id')) + array('user_id' => auth()->id());
 		
+		
+		
 		$validator = Validator::make($input, $this->validator);
 		if($validator->fails()){
-			return redirect()->action("ReservationController@show")
+			return redirect('/reservation/' . $request->input('room_id')) 
 				->withInput()
 				->withErrors($validator);
 				
@@ -48,20 +50,24 @@ class ReservationController extends Controller
 		return redirect()->action("ReservationController@confirm");
     }
 		
-		function confirm(Request $request)
+		function confirm(Request $request, Room $room)
 	{
 	    //dd(session()->all());
 		//セッションから値を取り出す
 		$input = $request->session()->get("form_input");
+	
+		
 		
 		//セッションに値が無い時はフォームに戻る
 		if(!$input){
-			return redirect()->action("ReservationController@show");
+			return redirect()->action('ReservationController@show');
 		}
-		return view("confirm",["input" => $input]);
+		
+		
+		return view('confirm', ["input" => $input])->with(['room_id' => $room->id]); 
 	}
 	
-	    function send(Request $request,Reservation $reservation)
+	    function send(Request $request,Reservation $reservation, Room $room)
 	{
 		//セッションから値を取り出す
 		$input = $request->session()->get("form_input");
@@ -76,7 +82,7 @@ class ReservationController extends Controller
 		
 		//戻るボタンが押されたとき
 		if($request->has('btn_back')){
-		    return redirect()->action("ReservationController@show")
+		    return redirect('/reservation/' . $input['room_id'])
 		        ->withInput($input);
 		}
 		

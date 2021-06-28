@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="/css/style.css">
         <title>Reservation</title>
         
         <!-- Fonts -->
@@ -10,9 +11,9 @@
     </head>
     <body>
         <header>
-            <h1 class='headline'>
-                <a>YNmusic</a>
-            </h1>
+            <div class="headline">
+               <h1>YNmusic</h1> 
+            </div> 
         </header>
         <div class="studio">
             <div class="name">
@@ -20,16 +21,16 @@
             </div>
             <div class="contents">
                 <div class="content_studio">
-                    <p>{{ $studio->location }}</p>
-                    <p>{{ $studio->description }}<p>
-                    <p>{{ $studio->tel_num }}</p>
+                    <p>location:  {{ $studio->location }}</p>
+                    <p>description:  {{ $studio->description }}<p>
+                    <p>phone number:  {{ $studio->tel_num }}</p>
                 </div>
                 <div class="content_room">
-                        <h3>Room type</h3>
+                        <h3>*Room type*</h3>
                     @foreach ($rooms as $room)
-                        <p>[{{ $room->type }}]   <font color="red"><a href="/reservation/{{ $room->id }}">reservation</a></font></p>
-                        <p>{{ $room->description }}</p>
-                        <p>{{ $room->price }}</p>
+                        <p>type: [{{ $room->type }}]   <font color="red"><a href="/reservation/{{ $room->id }}">reservation</a></font></p>
+                        <p>description:  {{ $room->description }}</p>
+                        <p>price:  {{ $room->price }}</p>
                     @endforeach
                 </div>
             </div>
@@ -37,8 +38,6 @@
         <div class="back">
             <a href="/studio">back</a>
         </div>
-        <footer>
-            <p>© YNStudio.All Rights Reserved.</p>
-        </footer>　
+        
     </body>
 </html>

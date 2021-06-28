@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="/css/style.css">
         <title>Reservation</title>
         
         <!-- Fonts -->
@@ -10,9 +11,9 @@
     </head>
     <body>
         <header>
-            <h1 class='headline'>
-                <a>YNmusic</a>
-            </h1>
+            <div class="headline">
+               <h1>YNmusic</h1> 
+            </div> 
         </header>
         <form action="{{ route('reservation.post') }}" method="POST">
             @csrf
@@ -50,8 +51,5 @@
             </div>
         </form>
         
-        <footer>
-            <p>© YNStudio.All Rights Reserved.</p>
-        </footer>　
     </body>
 </html>
