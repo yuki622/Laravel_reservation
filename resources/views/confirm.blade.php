@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="/css/style.css">
         <title>Reservation</title>
         
         <!-- Fonts -->
@@ -9,37 +10,38 @@
         
     </head>
     <body>
-        <header>
-            <h1 class='headline'>
-                <a>YNmusic</a>
-            </h1>
-        </header>
-        <form method="POST" action="{{ route('reservation.send') }}">
-            @csrf
-            <div class="name">
-                <h2>お名前</h2>
-                {{ $input["name"] }}
-            </div>
-            <div class="tel">
-                <h2>電話番号</h2>
-                {{ $input["tel"] }}
-            </div>
-            <div class="Number of people">
-                <h2>人数</h2>
-                {{ $input["num"] }}
-            </div>
-            <div class="date">
-                <h2>日時</h2>
-                {{ $input["datetime"] }}
-                
-            </div>
-            <div class="submit">
-            <input type="submit" name="btn_back" value="back"/>
-            <input type="submit" name="btn_finish" value="send"/>
-            </div>   
+        <div id="wrapper">
             
-        <footer>
-            <p>© YNStudio.All Rights Reserved.</p>
-        </footer>　
+            <header>
+                <div class='headline'>
+                    <h1>YNmusic</h1>
+                </div>
+            </header>
+            <form method="POST" action="{{ route('reservation.send') }}">
+                @csrf
+                <div class="name">
+                    <h2>お名前</h2>
+                    {{ $input["name"] }}
+                </div>
+                <div class="tel">
+                    <h2>電話番号</h2>
+                    {{ $input["tel"] }}
+                </div>
+                <div class="Number of people">
+                    <h2>人数</h2>
+                    {{ $input["num"] }}
+                </div>
+                <div class="date">
+                    <h2>日時</h2>
+                    {{ $input["datetime"] }}
+                </div>
+                <input type="hidden" name="room_id" value="{{ $room_id }}"/>
+                <div class="submit">
+                <input type="submit" name="btn_back" value="back"/>
+                <input type="submit" name="btn_finish" value="send"/>
+                </div>   
+            </form>    
+        </div>
+            
     </body>
 </html>
